@@ -1,11 +1,17 @@
 import { formatearDinero } from "../helpers"
 import useQuiosco from "../hooks/useQuiosco"
-import Producto from "./Producto"
+import { useAuth } from "../hooks/useAuth"
 import ResumenProducto from "./ResumenProducto"
 
 export default function Resumen() {
-  const {pedido, total} = useQuiosco()
+  const {pedido, total,handleSubmitNuevaOrden} = useQuiosco()
   const comprobarPedido = () => pedido.length === 0 
+  const {logout} = useAuth({});
+  const handleSubmit = e => {
+    e.preventDefault();
+    handleSubmitNuevaOrden(logout);
+
+  }
 
   return (
     <aside className="md:w-72 h-screen overflow-y-scroll p-5">
@@ -35,7 +41,10 @@ export default function Resumen() {
         {formatearDinero(total)}
       </p>
 
-      <form className="w-full">
+      <form 
+        className="w-full"
+        onSubmit={handleSubmit}
+      >
         <div className="mt-5">
           <input 
             type="submit"
